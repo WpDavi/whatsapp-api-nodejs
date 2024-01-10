@@ -2237,7 +2237,7 @@
     "type-check" "~0.4.0"
 
 "libsignal@git+https://github.com/adiwajshing/libsignal-node.git":
-  "integrity" "sha512-EmObdI4U/blbE4Thy31vD0ae/1OcNZFb4MYXJ7NpoHXnui8dZAWUU9gDA1htsBHag/IHv/tL4S0gG/AtDz4ztQ=="
+  "integrity" "sha512-ViglXJXlOHNYU2usuSaLfS7fIDkZE0LJeOZdWNNlnIyQWiGwTnD6O4W9RfUUb9Rq+/iLOJdaCOrW6l7XSuCBng=="
   "resolved" "git+ssh://git@github.com/adiwajshing/libsignal-node.git"
   "version" "2.0.1"
   dependencies:
