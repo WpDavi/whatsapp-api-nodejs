@@ -1,4 +1,5 @@
 exports.Text = async (req, res) => {
+    console.log('teseeeeeeeee')
     const data = await WhatsAppInstances[req.query.key].sendTextMessage(
         req.body.id,
         req.body.message
@@ -114,11 +115,17 @@ exports.SetStatus = async (req, res) => {
 }
 
 exports.Read = async (req, res) => {
-    const data = await WhatsAppInstances[req.query.key].readMessage(req.body.msg)
+    const data = await WhatsAppInstances[req.query.key].readMessage(
+        req.body.msg
+    )
     return res.status(201).json({ error: false, data: data })
 }
 
 exports.React = async (req, res) => {
-    const data = await WhatsAppInstances[req.query.key].reactMessage(req.body.id, req.body.key, req.body.emoji)
+    const data = await WhatsAppInstances[req.query.key].reactMessage(
+        req.body.id,
+        req.body.key,
+        req.body.emoji
+    )
     return res.status(201).json({ error: false, data: data })
 }
