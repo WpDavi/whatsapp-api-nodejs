@@ -1,28 +1,27 @@
-const userSchema = require("../models/user");
+const userSchema = require('../models/user')
 
-exports.Text = async (req, res) => {  
-    console.log( req.body) 
+exports.Text = async (req, res) => {
+    console.log(req.body)
     //const teste = await userSchema.create({
     //    email: 'teste@example.com',
     //    password: 'secret',
     //});
-  
+
     const { ids, message } = req.body
     const results = []
-    const erros  = []
+    const erros = []
     for (const id of ids) {
         try {
             const data = await WhatsAppInstances[req.query.key].sendTextMessage(
                 id,
                 message
             )
-            results.push( id )
-            
+            results.push(id)
         } catch (error) {
-            erros.push( id )   
-            console.log(id)    
-            console.log(error)     
-        }     
+            erros.push(id)
+            console.log(id)
+            console.log(error)
+        }
     }
     return res.status(201).json({ enviados: results, erros: erros })
 }

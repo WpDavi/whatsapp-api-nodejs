@@ -133,7 +133,7 @@ exports.list = async (req, res) => {
         WhatsAppInstances[key].getInstanceDetail(key)
     )
     let data = await Promise.all(instance)
-    
+
     return res.json({
         error: false,
         message: 'All instance listed',
