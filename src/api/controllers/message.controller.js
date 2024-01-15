@@ -19,7 +19,9 @@ exports.Text = async (req, res) => {
             results.push( id )
             
         } catch (error) {
-            erros.push( id )            
+            erros.push( id )   
+            console.log(id)    
+            console.log(error)     
         }     
     }
     return res.status(201).json({ enviados: results, erros: erros })
