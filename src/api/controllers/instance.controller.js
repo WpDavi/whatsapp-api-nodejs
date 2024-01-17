@@ -3,28 +3,44 @@ const fs = require('fs')
 const path = require('path')
 const config = require('../../config/config')
 const { Session } = require('../class/session')
+const istanceModal = require('../models/istanceModal')
 
 exports.init = async (req, res) => {
-    const key = req.query.key
-    const webhook = !req.query.webhook ? false : req.query.webhook
-    const webhookUrl = !req.query.webhookUrl ? null : req.query.webhookUrl
-    const appUrl = config.appUrl || req.protocol + '://' + req.headers.host
-    const instance = new WhatsAppInstance(key, webhook, webhookUrl)
-    const data = await instance.init()
-    WhatsAppInstances[data.key] = instance
-    res.json({
-        error: false,
-        message: 'Initializing successfully',
-        key: data.key,
-        webhook: {
-            enabled: webhook,
-            webhookUrl: webhookUrl,
-        },
-        qrcode: {
-            url: appUrl + '/instance/qr?key=' + data.key,
-        },
-        browser: config.browser,
-    })
+    try {
+        const resposta = await istanceModal.create({
+            key: 'teste@example.com',
+            numero: 'secret',
+            id_usuario: 'as',
+        })
+
+        if (resposta) {
+            const key = req.query.key
+            const webhook = !req.query.webhook ? false : req.query.webhook
+            const webhookUrl = !req.query.webhookUrl
+                ? null
+                : req.query.webhookUrl
+            const appUrl =
+                config.appUrl || req.protocol + '://' + req.headers.host
+            const instance = new WhatsAppInstance(key, webhook, webhookUrl)
+            const data = await instance.init()
+            WhatsAppInstances[data.key] = instance
+            res.json({
+                error: false,
+                message: 'Initializing successfully',
+                key: data.key,
+                webhook: {
+                    enabled: webhook,
+                    webhookUrl: webhookUrl,
+                },
+                qrcode: {
+                    url: appUrl + '/instance/qr?key=' + data.key,
+                },
+                browser: config.browser,
+            })
+        }
+    } catch (error) {
+        res.json({ error })
+    }
 }
 
 exports.qr = async (req, res) => {
