@@ -8,9 +8,9 @@ const istanceModal = require('../models/istanceModal')
 exports.init = async (req, res) => {
     try {
         const resposta = await istanceModal.create({
-            key: 'teste@example.com',
-            numero: 'secret',
-            id_usuario: 'as',
+            key: req.query.key,
+            numero: req.query.fone,
+            id_usuario: req.query.iduser,
         })
 
         if (resposta) {
