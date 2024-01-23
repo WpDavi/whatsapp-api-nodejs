@@ -4,6 +4,7 @@ const path = require('path')
 const config = require('../../config/config')
 const { Session } = require('../class/session')
 const istanceModal = require('../models/istanceModal')
+const userSchema = require('../models/user')
 
 exports.init = async (req, res) => {
     try {
@@ -155,4 +156,62 @@ exports.list = async (req, res) => {
         message: 'All instance listed',
         data: data,
     })
+}
+
+exports.CreateUser = async (req, res) => {
+    const { email, password, name, phone } = req.body
+    try {
+        const existingUser = await userSchema.findOne({ email })
+        if (existingUser) {
+            return res.status(400).json({
+                message:
+                    'E-mail já está em uso. Por favor, escolha outro e-mail.',
+            })
+        }
+
+        const newUser = await userSchema.create({
+            email,
+            password,
+            name,
+            phone,
+        })
+
+        res.status(201).json({
+            message: 'Usuário criado com sucesso!',
+            user: newUser,
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: 'Erro ao criar usuário',
+            error: error.message,
+        })
+    }
+}
+
+exports.UserLogin = async (req, res) => {
+    const { email, password } = req.body
+    const data = new Date()
+    try {
+        const user = await userSchema.findOne({ email })
+
+        if (!user) {
+            return res
+                .status(401)
+                .json({ message: 'E-mail ou senha inválidos.' })
+        }
+        if (user.password !== password) {
+            return res
+                .status(401)
+                .json({ message: 'E-mail ou senha inválidos.' })
+        }
+        const token = `${user._id}${JSON.stringify(data)}`
+        await userSchema.updateOne({ email }, { $set: { token } })
+
+        res.status(200).json({ message: 'Login bem-sucedido!', user, token })
+    } catch (error) {
+        res.status(500).json({
+            message: 'Erro ao realizar login',
+            error: error.message,
+        })
+    }
 }

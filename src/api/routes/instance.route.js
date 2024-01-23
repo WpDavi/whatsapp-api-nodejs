@@ -13,4 +13,7 @@ router.route('/logout').delete(keyVerify, loginVerify, controller.logout)
 router.route('/delete').delete(keyVerify, controller.delete)
 router.route('/list').get(controller.list)
 
+router.route('/criaruser').post(controller.CreateUser)
+router.route('/loginuser').post(controller.UserLogin)
+
 module.exports = router
