@@ -8,13 +8,13 @@ const userSchema = require('../models/user')
 
 exports.init = async (req, res) => {
     try {
-        const resposta = await istanceModal.create({
-            key: req.query.key,
-            numero: req.query.fone,
-            id_usuario: req.query.iduser,
-        })
-
-        if (resposta) {
+        if( req.query.fone){
+            await istanceModal.create({
+                key: req.query.key,
+                numero: req.query.fone,
+                id_usuario: req.query.iduser,
+            })
+        }     
             const key = req.query.key
             const webhook = !req.query.webhook ? false : req.query.webhook
             const webhookUrl = !req.query.webhookUrl
@@ -38,7 +38,7 @@ exports.init = async (req, res) => {
                 },
                 browser: config.browser,
             })
-        }
+        
     } catch (error) {
         res.json({ error })
     }
@@ -211,6 +211,23 @@ exports.UserLogin = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             message: 'Erro ao realizar login',
+            error: error.message,
+        })
+    }
+}
+
+exports.GetUser = async (req, res) => {    
+    try {
+        const user = await userSchema.findOne({ token:req.headers.token })
+        if (!user) {
+            return res
+                .status(401)
+                .json({ message: 'Token não encontrado' })
+        }      
+        res.status(200).json({ message: 'Token encontrado!', user})
+    } catch (error) {
+        res.status(500).json({
+            message: 'Erro ao encontrar o token',
             error: error.message,
         })
     }

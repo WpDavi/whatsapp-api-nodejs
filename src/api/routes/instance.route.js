@@ -15,5 +15,6 @@ router.route('/list').get(controller.list)
 
 router.route('/criaruser').post(controller.CreateUser)
 router.route('/loginuser').post(controller.UserLogin)
+router.route('/getuser').get(controller.GetUser)
 
 module.exports = router
