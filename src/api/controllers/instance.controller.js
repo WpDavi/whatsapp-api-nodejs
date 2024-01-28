@@ -6,6 +6,29 @@ const { Session } = require('../class/session')
 const istanceModal = require('../models/istanceModal')
 const userSchema = require('../models/user')
 
+exports.initPure = async (req, res) => {
+    const key = req.query.key
+    const webhook = !req.query.webhook ? false : req.query.webhook
+    const webhookUrl = !req.query.webhookUrl ? null : req.query.webhookUrl
+    const appUrl = config.appUrl || req.protocol + '://' + req.headers.host
+    const instance = new WhatsAppInstance(key, webhook, webhookUrl)
+    const data = await instance.init()
+    WhatsAppInstances[data.key] = instance
+    res.json({
+        error: false,
+        message: 'Initializing successfully',
+        key: data.key,
+        webhook: {
+            enabled: webhook,
+            webhookUrl: webhookUrl,
+        },
+        qrcode: {
+            url: appUrl + '/instance/qr?key=' + data.key,
+        },
+        browser: config.browser,
+    })
+}
+
 exports.init = async (req, res) => {
     try {
         const instanceUser = await istanceModal.findOne({
