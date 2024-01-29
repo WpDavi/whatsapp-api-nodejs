@@ -3,6 +3,7 @@ exports.Text = async (req, res) => {
     const results = []
     const erros = []
     for (const id of ids) {
+        console.log(id)
         try {
             const data = await WhatsAppInstances[req.query.key].sendTextMessage(
                 id,
@@ -11,7 +12,6 @@ exports.Text = async (req, res) => {
             results.push(id)
         } catch (error) {
             erros.push(id)
-            console.log(id)
             console.log(error)
         }
     }
