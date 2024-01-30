@@ -1,14 +1,27 @@
+const getIntervel = require('./func/funcoes')
+
 exports.Text = async (req, res) => {
-    const { ids, message } = req.body
+    const {
+        ids,
+        message,
+        message2,
+        message3,
+        message4,
+        daleySegDe,
+        daleySegPara,
+    } = req.body
     const results = []
     const erros = []
+    async function sand(id, message) {
+        await WhatsAppInstances[req.query.key].sendTextMessage(id, message)
+    }
     for (const id of ids) {
-        console.log(id)
         try {
-            const data = await WhatsAppInstances[req.query.key].sendTextMessage(
-                id,
-                message
-            )
+            await sand(id, message)
+            message2 && (await sand(id, message2))
+            message3 && (await sand(id, message3))
+            message4 && (await sand(id, message4))
+
             results.push(id)
         } catch (error) {
             erros.push(id)
