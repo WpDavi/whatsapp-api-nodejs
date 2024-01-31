@@ -12,15 +12,18 @@ exports.Text = async (req, res) => {
     } = req.body
     const results = []
     const erros = []
-    async function sand(id, message) {
+    async function sendWithDelay(id, message) {
         await WhatsAppInstances[req.query.key].sendTextMessage(id, message)
     }
+
     for (const id of ids) {
         try {
-            await sand(id, message)
-            message2 && (await sand(id, message2))
-            message3 && (await sand(id, message3))
-            message4 && (await sand(id, message4))
+            const interv = await getIntervel(daleySegDe, daleySegPara)
+            await new Promise((resolve) => setTimeout(resolve, interv))
+            await sendWithDelay(id, message)
+            message2 && (await sendWithDelay(id, message2))
+            message3 && (await sendWithDelay(id, message3))
+            message4 && (await sendWithDelay(id, message4))
 
             results.push(id)
         } catch (error) {
