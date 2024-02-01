@@ -1,4 +1,4 @@
-const getIntervel = require('./func/funcoes')
+const { getIntervel, formatarNumeroTelefone } = require('./func/funcoes')
 
 exports.Text = async (req, res) => {
     const {
@@ -17,17 +17,19 @@ exports.Text = async (req, res) => {
     }
 
     for (const id of ids) {
+        const formatNumber = formatarNumeroTelefone(id)
+
         try {
             const interv = await getIntervel(daleySegDe, daleySegPara)
             await new Promise((resolve) => setTimeout(resolve, interv))
-            await sendWithDelay(id, message)
-            message2 && (await sendWithDelay(id, message2))
-            message3 && (await sendWithDelay(id, message3))
-            message4 && (await sendWithDelay(id, message4))
+            await sendWithDelay(formatNumber, message)
+            message2 && (await sendWithDelay(formatNumber, message2))
+            message3 && (await sendWithDelay(formatNumber, message3))
+            message4 && (await sendWithDelay(formatNumber, message4))
 
-            results.push(id)
+            results.push(formatNumber)
         } catch (error) {
-            erros.push(id)
+            erros.push(formatNumber)
             console.log(error)
         }
     }

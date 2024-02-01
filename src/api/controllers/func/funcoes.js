@@ -6,4 +6,16 @@ const getIntervel = (limiteInferior, limiteSuperior) => {
     return tempoAleatorio
 }
 
-module.exports = getIntervel
+function formatarNumeroTelefone(numero) {
+    numero = numero.replace(/\D/g, '')
+
+    if (!numero.startsWith('55')) {
+        numero = '55' + numero
+    }
+    if (numero.length == 13 && numero.charAt(5) === '9') {
+        numero = numero.substring(0, 4) + numero.substring(5)
+    }
+
+    return numero
+}
+module.exports = { getIntervel, formatarNumeroTelefone }
