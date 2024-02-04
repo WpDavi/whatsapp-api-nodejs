@@ -18,6 +18,7 @@ exports.Text = async (req, res) => {
 
     for (const id of ids) {
         const formatNumber = formatarNumeroTelefone(id)
+        console.log(formatNumber)
 
         try {
             const interv = await getIntervel(daleySegDe, daleySegPara)
