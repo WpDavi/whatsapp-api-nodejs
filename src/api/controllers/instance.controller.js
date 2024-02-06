@@ -294,13 +294,16 @@ exports.SandListModal = async (req, res) => {
 
 exports.getSandList = async (req, res) => {
     try {
-        const list = await sandListModal.findOne({
-            id_usuario: req.headers.token,
-        })
-        if (!list) {
+        const sandList = await sandListModal
+            .findOne({
+                id_usuario: req.headers.token,
+            })
+            .sort({ _id: -1 })
+            .limit(1)
+        if (!sandList) {
             return res.status(401).json({ message: 'instances não encontrado' })
         }
-        res.status(200).json(instances)
+        res.status(200).json(sandList)
     } catch (error) {
         res.status(500).json({
             message: 'Erro ao encontrar o instances',
