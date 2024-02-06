@@ -1,3 +1,4 @@
+const sandListModal = require('../models/sandListModal')
 const { getIntervel, formatarNumeroTelefone } = require('./func/funcoes')
 
 exports.Text = async (req, res) => {
@@ -9,6 +10,7 @@ exports.Text = async (req, res) => {
         message4,
         daleySegDe,
         daleySegPara,
+        ListSand,
     } = req.body
     const results = []
     const erros = []
@@ -31,9 +33,15 @@ exports.Text = async (req, res) => {
             results.push(formatNumber)
         } catch (error) {
             erros.push(formatNumber)
-            console.log(error)
+            //console.log(error)
         }
     }
+    const updates = {
+        arrey: JSON.stringify({ enviados: results, erros: erros }),
+    }
+    await sandListModal.findByIdAndUpdate(ListSand, updates, {
+        new: true,
+    })
     return res.status(201).json({ enviados: results, erros: erros })
 }
 

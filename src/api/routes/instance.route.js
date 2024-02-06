@@ -19,4 +19,7 @@ router.route('/loginuser').post(controller.UserLogin)
 router.route('/getuser').get(controller.GetUser)
 router.route('/getinstanceuser').get(controller.GetInstanceUser)
 
+router.route('/sandListModal').get(controller.SandListModal)
+router.route('/getSandList').get(controller.getSandList)
+
 module.exports = router

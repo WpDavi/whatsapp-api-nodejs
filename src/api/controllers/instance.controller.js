@@ -5,6 +5,7 @@ const config = require('../../config/config')
 const { Session } = require('../class/session')
 const istanceModal = require('../models/istanceModal')
 const userSchema = require('../models/user')
+const sandListModal = require('../models/sandListModal')
 
 exports.initPure = async (req, res) => {
     const key = req.query.key
@@ -266,6 +267,37 @@ exports.GetInstanceUser = async (req, res) => {
             instances: req.headers.id,
         })
         if (!instances) {
+            return res.status(401).json({ message: 'instances não encontrado' })
+        }
+        res.status(200).json(instances)
+    } catch (error) {
+        res.status(500).json({
+            message: 'Erro ao encontrar o instances',
+            error: error.message,
+        })
+    }
+}
+
+exports.SandListModal = async (req, res) => {
+    try {
+        const List = await sandListModal.create({
+            id_usuario: req.headers.token,
+        })
+        res.status(201).json(List)
+    } catch (error) {
+        res.status(500).json({
+            message: 'Erro ao criar lista',
+            error: error.message,
+        })
+    }
+}
+
+exports.getSandList = async (req, res) => {
+    try {
+        const list = await sandListModal.findOne({
+            id_usuario: req.headers.token,
+        })
+        if (!list) {
             return res.status(401).json({ message: 'instances não encontrado' })
         }
         res.status(200).json(instances)
