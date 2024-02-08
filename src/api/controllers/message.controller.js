@@ -38,6 +38,10 @@ exports.Text = async (req, res) => {
     }
     const updates = {
         arrey: JSON.stringify({ enviados: results, erros: erros }),
+        mesage1: message,
+        mesage2: message2,
+        mesage3: message3,
+        mesage4: message4,
     }
     await sandListModal.findByIdAndUpdate(ListSand, updates, {
         new: true,
